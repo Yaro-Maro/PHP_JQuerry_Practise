@@ -18,6 +18,7 @@
       });
     </script>
 
+
     <style media="screen">
       body {font-family: Arial; font-size: 12px;}
       fieldset {border: 0;}
@@ -35,27 +36,26 @@
     <form action="" method="post" id="form">
       <fieldset>
         <label for="name">Name:</label>
-        <input type="text" name="name" id="name" class="required" value="<?php $form['name'];?>">
+        <input type="text" name="name" id="name" class="required" value="<?php echo $form['name'];?>">
         <?php echo $error['name']; ?>
 
         <label for="phone">Phone (000-000-0000): </label>
-        <input type="text" name="phone" id="phone" class="required" value="<?php $form['phone'];?>">
+        <input type="text" name="phone" id="phone" class="required" value="<?php echo $form['phone'];?>">
         <?php echo $error['phone']; ?>
 
         <label for="fax">Fax:</label>
-        <input type="text" name="fax" id="fax" value="<?php $form['fax'];?>">
+        <input type="text" name="fax" id="fax" value="<?php echo $form['fax'];?>">
 
         <label for="email">Email:</label>
-        <input type="text" name="email" id="email" class="required email" value="<?php $form['email'];?>">
+        <input type="text" name="email" id="email" class="required email" value="<?php echo $form['email'];?>">
         <?php echo $error['email']; ?>
 
         <label for="comments">Comments:</label>
-        <textarea type="text" name="comments" id="comments" value="<?php $form['comments'];?>">  </textarea>
+        <textarea type="text" name="comments" id="comments"><?php echo $form['comments'];?></textarea>
 
         <p class="required_msg">* required fields</p>
 
-        <input type="submit" name="submit" id="submit">
-
+        <input type="submit" name="submit" id="submit"><br>
       </fieldset>
     </form>
 

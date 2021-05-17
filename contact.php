@@ -1,9 +1,9 @@
 <?php
+//$form[] is used to communicate with the value of each field
+//$error[] is used to display error message for necessary fields
 
 //variables
-$error_open = "<label class='error'>";
-$error_close = "</label>";
-$valid_form = true;
+$valid_form = TRUE;
 $redirect="success.php";
 
 $form_elements = array('name', 'phone', 'fax', 'email', 'comments');
@@ -14,37 +14,42 @@ foreach ($required_elements as $required) {
     $error[$required] = "";
 }
 
-//Checks if form has been submitted
+//Checks if form has been posted
 if (isset($_POST['submit'])) {
-  //It has -> process form
-  //Put the each value posted, into each field, to preserve what the user typed in
-  foreach ($form_elements as $element) {
+
+  //Preserve what the user typed in
+    foreach ($form_elements as $element) {
     //htmlspecialchars - makes sure there are no "invalid characters" in the input
-    $form[$element] = htmlspecialchars($_POST[$element]);
+    $form[$element]  = htmlspecialchars($_POST[$element]);
   }
 
   //check if required fields are empty, then set valid_form to false
   foreach ($required_elements as $required) {
-    if ($required === "") {
-      $error[$required] = "<label class='error'>$required is a required field.</label>";
+    if ($form["$required"] == "") {
+      $error["$required"] = "<label class='error'>The $required field is required.</label>";
+      $valid_form = FALSE;
     }
   }
 
-} else {
-  //It hasn't -> set value of every element to none
-  foreach ($form_elements as $element) {
-    $form[$element] = "";
+  //Check if form has been submitted successfuly
+  if ($valid_form) {
+    header("Location: $redirect");
   }
-
-  //display form
-  include "form.php";
-
+  else {
+    include "form.php";
+  }
 }
 
 
 
+//If the form hasn't yet been submitted, set all values to none
 
-
-
+else {
+  foreach ($form_elements as $element) {
+    $form[$element] = "";
+  }
+  //display form
+  include "form.php";
+}
 
 ?>
