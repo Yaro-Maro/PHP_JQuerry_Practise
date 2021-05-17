@@ -5,10 +5,19 @@
     <title>Form validation</title>
     <script type="text/javascript" src="jquery.js"></script>
     <script type="text/javascript" src="jquery.validate.js"></script>
-
+    <script type="text/javascript" src="additional-methods.js"></script>
     <script type="text/javascript">
-
+      $(document).ready(function(){
+        $("#form").validate({
+          rules: {
+            phone: {
+              phoneUS: true
+            }
+          }
+        });
+      });
     </script>
+
     <style media="screen">
       body {font-family: Arial; font-size: 12px;}
       fieldset {border: 0;}
@@ -23,22 +32,25 @@
   </head>
 
   <body>
-    <form action="process.php" method="post" id="form">
+    <form action="" method="post" id="form">
       <fieldset>
         <label for="name">Name:</label>
-        <input type="text" name="name" id="name">
+        <input type="text" name="name" id="name" class="required" value="<?php $form['name'];?>">
+        <?php echo $error['name']; ?>
 
         <label for="phone">Phone (000-000-0000): </label>
-        <input type="text" name="phone" id="phone">
+        <input type="text" name="phone" id="phone" class="required" value="<?php $form['phone'];?>">
+        <?php echo $error['phone']; ?>
 
         <label for="fax">Fax:</label>
-        <input type="text" name="fax" id="fax">
+        <input type="text" name="fax" id="fax" value="<?php $form['fax'];?>">
 
         <label for="email">Email:</label>
-        <input type="text" name="email" id="email">
+        <input type="text" name="email" id="email" class="required email" value="<?php $form['email'];?>">
+        <?php echo $error['email']; ?>
 
         <label for="comments">Comments:</label>
-        <input type="text" name="comments" id="comments">
+        <textarea type="text" name="comments" id="comments" value="<?php $form['comments'];?>">  </textarea>
 
         <p class="required_msg">* required fields</p>
 
