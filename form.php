@@ -3,9 +3,9 @@
   <head>
     <meta charset="utf-8">
     <title>Form validation</title>
-    <script type="text/javascript" src="jquery.js"></script>
-    <script type="text/javascript" src="jquery.validate.js"></script>
-    <script type="text/javascript" src="additional-methods.js"></script>
+    <script type="text/javascript" src="vvvjquery.js"></script>
+    <script type="text/javascript" src="vvvjquery.validate.js"></script>
+    <script type="text/javascript" src="vvvadditional-methods.js"></script>
     <script type="text/javascript">
       $(document).ready(function(){
         $("#form").validate({
