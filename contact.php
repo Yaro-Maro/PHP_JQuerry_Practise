@@ -2,7 +2,12 @@
 //$form[] is used to communicate with the value of each field
 //$error[] is used to display error message for necessary fields
 
-//variables
+
+//email variables
+$to = 'example@example.com';
+$subject = "Somebody submitted a form.";
+
+//form variables
 $valid_form = TRUE;
 $redirect="success.php";
 
@@ -14,22 +19,41 @@ foreach ($required_elements as $required) {
     $error[$required] = "";
 }
 
-//Checks if form has been posted
+//Checks if form has been posted, then do all these actions:
 if (isset($_POST['submit'])) {
 
-  //Preserve what the user typed in
+    //Preserve what the user typed in
     foreach ($form_elements as $element) {
     //htmlspecialchars - makes sure there are no "invalid characters" in the input
     $form[$element]  = htmlspecialchars($_POST[$element]);
   }
 
-  //check if required fields are empty, then set valid_form to false
+  //Check if the phone is of valid format
+  if (!preg_match('/^(\+?1-?)?(\([2-9]([02-9]\d|1[02-9])\)|[2-9]([02-9]\d|1[02-9]))-?[2-9]\d{2}-?\d{4}$/', $form['phone'])) {
+    $error['phone'] = "<label class='error'>Please enter a valid phone number.</label>";
+    $valid_form = FALSE;
+  }
+
+  //Check if email is the valid format
+  if (!filter_var($form['email'], FILTER_VALIDATE_EMAIL)) {
+    $error["email"] = "<label class='error'>Please enter a valid email.</label>";
+    $valid_form = FALSE;
+  }
+
+
+  //Check if required fields are empty
   foreach ($required_elements as $required) {
     if ($form["$required"] == "") {
       $error["$required"] = "<label class='error'>The $required field is required.</label>";
       $valid_form = FALSE;
     }
   }
+
+  //Check form for any SPAM, before submitting.
+  foreach ($form_elements as $element) {
+
+  }
+
 
   //Check if form has been submitted successfuly
   if ($valid_form) {
@@ -41,15 +65,41 @@ if (isset($_POST['submit'])) {
 }
 
 
-
-//If the form hasn't yet been submitted, set all values to none
-
+//If the form hasn't been posted, set all values to none.
 else {
   foreach ($form_elements as $element) {
     $form[$element] = "";
   }
   //display form
   include "form.php";
+}
+
+
+//FUNCTIONS to check for bad strings and new lines:
+function contains_bad_str($str_to_test) {
+  $bad_strings = array(
+                "content-type:",
+                "mime-version:",
+                "multipart/mixed",
+		            "Content-Transfer-Encoding:",
+                "bcc:",
+            		"cc:",
+            		"to:"
+  );
+
+  foreach($bad_strings as $bad_string) {
+    if(eregi($bad_string, strtolower($str_to_test))) {
+      echo "$bad_string found. Suspected injection attempt - mail not being sent.";
+      exit;
+    }
+  }
+}
+
+function contains_newlines($str_to_test) {
+   if(preg_match("/(%0A|%0D|n+|r+)/i", $str_to_test) != 0) {
+     echo "newline found in $str_to_test. Suspected injection attempt - mail not being sent.";
+     exit;
+   }
 }
 
 ?>

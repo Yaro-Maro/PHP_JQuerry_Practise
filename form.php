@@ -3,9 +3,9 @@
   <head>
     <meta charset="utf-8">
     <title>Form validation</title>
-    <script type="text/javascript" src="vvvjquery.js"></script>
-    <script type="text/javascript" src="vvvjquery.validate.js"></script>
-    <script type="text/javascript" src="vvvadditional-methods.js"></script>
+    <script type="text/javascript" src="vvjquery.js"></script>
+    <script type="text/javascript" src="vvjquery.validate.js"></script>
+    <script type="text/javascript" src="vvadditional-methods.js"></script>
     <script type="text/javascript">
       $(document).ready(function(){
         $("#form").validate({
@@ -39,7 +39,7 @@
         <input type="text" name="name" id="name" class="required" value="<?php echo $form['name'];?>">
         <?php echo $error['name']; ?>
 
-        <label for="phone">Phone (000-000-0000): </label>
+        <label for="phone">Phone (212-999-0983): </label>
         <input type="text" name="phone" id="phone" class="required" value="<?php echo $form['phone'];?>">
         <?php echo $error['phone']; ?>
 
