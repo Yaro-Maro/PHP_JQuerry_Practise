@@ -1,6 +1,6 @@
 <?php
-//$form[] is used to communicate with the value of each field
-//$error[] is used to display error message for necessary fields
+//$form[''] is used to communicate with the value of each field
+//$error[''] is used to display error message for necessary fields
 
 
 //email variables
@@ -49,9 +49,10 @@ if (isset($_POST['submit'])) {
     }
   }
 
-  //Check form for any SPAM, before submitting.
+  //SPAM check before submitting
   foreach ($form_elements as $element) {
-
+    contains_bad_str($form[$element]);
+    contains_newlines($form[$element]);
   }
 
 
@@ -80,7 +81,7 @@ function contains_bad_str($str_to_test) {
   $bad_strings = array(
                 "content-type:",
                 "mime-version:",
-                "multipart/mixed",
+                'multipart/mixed',
 		            "Content-Transfer-Encoding:",
                 "bcc:",
             		"cc:",
@@ -88,7 +89,7 @@ function contains_bad_str($str_to_test) {
   );
 
   foreach($bad_strings as $bad_string) {
-    if(eregi($bad_string, strtolower($str_to_test))) {
+    if(preg_match("#" . $bad_string . "#", strtolower($str_to_test))) {
       echo "$bad_string found. Suspected injection attempt - mail not being sent.";
       exit;
     }
