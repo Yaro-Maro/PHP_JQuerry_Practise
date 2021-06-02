@@ -74,12 +74,10 @@ if (isset($_POST['submit'])) {
     //send mail
     mail($to, $subject, $message, $headers);
 
-
     //redirect
     header("Location: $redirect");
   }
   else {
-
     include "form.php";
   }
 }
