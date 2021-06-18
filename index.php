@@ -4,7 +4,7 @@
 
 
 //email variables
-$to = 'example@example.com';
+$to = 'example@example.com, backup@example.com';
 $subject = "Somebody submitted a form.";
 
 //form variables
@@ -49,7 +49,7 @@ if (isset($_POST['submit'])) {
     }
   }
 
-  //SPAM check before submitting
+  //Check for SPAM, before submitting
   foreach ($form_elements as $element) {
     contains_bad_str($form[$element]);
     contains_newlines($form[$element]);
@@ -58,6 +58,23 @@ if (isset($_POST['submit'])) {
 
   //Check if form has been submitted successfuly
   if ($valid_form) {
+    //create message
+    $message = "Name" . $form ['name'] . "\n";
+    $message .= "Email" . $form ['email'] . "\n";
+    $message .= "Phone" . $form ['phone'] . "\n";
+    $message .= "Fax" . $form ['fax'] . "\n";
+    $message .= "Comment" . $form ['comments'] . "\n";
+
+    $headers = "From: www.example.com <admin@example.com> /r/n";
+    $headers = "CC: boss@example.com /r/n";
+    $headers .= "X-Sender: <admin@example.com> /r/n";
+    $headers .= "X-Mailer: PHP/" . phpversion . "/r/n";
+    $headers .= "Reply-To: " . $form['email'];
+
+    //send mail
+    mail($to, $subject, $message, $headers);
+
+    //redirect
     header("Location: $redirect");
   }
   else {
